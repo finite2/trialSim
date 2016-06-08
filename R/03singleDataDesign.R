@@ -35,10 +35,9 @@ setMethod("simTrial", signature = c(object = "singleDataDesign"), definition = f
         #print(data)
         print(params$decision)
 
-        for(i in 1:params$decision@cohortSize){
-          # get baseline data for next patient (in particular arrival time)
-          params$data = do.call(dataFun, params)
-        }
+
+        # get data for next patient
+        params$data = do.call(dataFun, params)
 
         ###########################################
         # check if ready to analyse

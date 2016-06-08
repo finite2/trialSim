@@ -50,13 +50,13 @@ setMethod("simTrial", signature = c(object = "splitDataDesign"), definition = fu
         ###########################################
         # if recruiting now asign arm/dose etc. and get new patient
         if(params$decision@recruiting){
-        for(i in 1:params$decision@cohortSize){
+
           # get outcome data if recruiting
           params$data = do.call(outcomeFun, params)
 
           # get baseline data for next patient
           params$data = do.call(baselineFun, params)
-        }
+
         } else {
           # get baseline data for next patient (in particular arrival time)
           params$data = do.call(baselineFun, params)
