@@ -33,7 +33,7 @@ makeDecisions = setClass( "makeDecisions", list(fun = "function"))
 
 #' @exportClass decision
 #' @export decision
-decision = setClass("decision", list(continue = "logical", recruiting = "logical", stopReason = "character"))
+decision = setClass("decision", list(continue = "logical", cohort = "numeric", recruiting = "logical", stopReason = "character", cohortSize = "integer"), prototype = list(continue = TRUE, recruiting = TRUE, cohort = 1L))
 
 #########################################################################
 # Compiled design
