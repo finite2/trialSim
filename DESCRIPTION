@@ -1,0 +1,12 @@
+Package: trialSim
+Type: Package
+Title: trialSim
+Version: 0.1
+Date: 2016-06-08
+Author: Peter Dutton
+Maintainer: Peter Dutton <dutton.peter@gmail.com>
+Description: Modular trial design by simulation package
+License: GPL-2
+Depends:
+	R2jags
+RoxygenNote: 5.0.1
