@@ -28,6 +28,7 @@ setMethod("simTrial", signature = c(object = "splitDataDesign"), definition = fu
 
       baselineFun = object@simBaseline@fun
       outcomeFun = object@simOutcome@fun
+      triggerFun = object@triggerAnalysis@fun
       modelFun = object@model@fun
       decisionFun = object@decision@fun
 
@@ -46,7 +47,8 @@ setMethod("simTrial", signature = c(object = "splitDataDesign"), definition = fu
         #print(data)
         print(params$decision)
 
-
+        ###########################################
+        # if recruiting now asign arm/dose etc. and get new patient
         if(params$decision@recruiting){
         for(i in 1:params$decision@cohortSize){
           # get outcome data if recruiting
@@ -56,9 +58,14 @@ setMethod("simTrial", signature = c(object = "splitDataDesign"), definition = fu
           params$data = do.call(baselineFun, params)
         }
         } else {
-          # get baseline data for next patient
+          # get baseline data for next patient (in particular arrival time)
           params$data = do.call(baselineFun, params)
         }
+
+        ###########################################
+        # check if ready to analyse
+        params$decision = do.call(triggerFun, params)
+        if(params$decision@analyse){
         print(params$data)
 
         # fit the model at the timepoint the next patient arrives
@@ -66,7 +73,8 @@ setMethod("simTrial", signature = c(object = "splitDataDesign"), definition = fu
 
         # make decisions as to what happens next
         params$decision = do.call(decisionFun, params)
-
+        }
+        ###########################################
       }
       return(list(seed = seed ,data = params$data, decision = params$decision, params = params$model))
     }
@@ -84,28 +92,25 @@ setMethod("simTrial", signature = c(object = "splitDataDesign"), definition = fu
 
 
 setMethod("fitModel", signature = c(object = "splitDataDesign"), definition = function(object, seed = 123) {
+  set.seed(seed)
 
   modelFun = object@model@fun
   params = object@p
-  data = object@data
+  params$data = object@data
 
   if(!is.na(data$dose[dim(data)[1]])) {
-
-    set.seed(seed)
 
     baselineFun = object@simBaseline@fun
 
     # simuate baseline for next patient if not provided
-    params$data = data
-    data = do.call(baselineFun, params)
+    params$data = do.call(baselineFun, params)
 
     warning("No baseline data provided./nSimulated baseline data for one patient. This may be used.")
   }
   # fit the model at the timepoint the next patient arrives
-  params$data = data
-  model = do.call(modelFun, params)
+  params$model = do.call(modelFun, params)
 
-  return(model)
+  return(params$model)
 })
 
 
@@ -116,7 +121,7 @@ setMethod("getDecision", signature = c(object = "splitDataDesign"), definition =
   decisionFun = object@decision@fun
   params = object@p
 
-  data = object@data
+  params$data = object@data
 
 
   if(!is.na(data$dose[dim(data)[1]])) {
@@ -124,19 +129,15 @@ setMethod("getDecision", signature = c(object = "splitDataDesign"), definition =
     baselineFun = object@simBaseline@fun
 
     # simuate baseline for next patient if not provided
-    params$data = data
     data = do.call(baselineFun, params)
 
     warning("No baseline data provided./nSimulated baseline data for one patient. This may be used.")
   }
   # fit the model at the timepoint the next patient arrives
-  params$data = data
-  model = do.call(modelFun, params)
+  params$model = do.call(modelFun, params)
 
   # make decisions as to what happens next
-  params$data = data
-  params$model = model
-  Decision = do.call(decisionFun, params)
+  params$decision = do.call(decisionFun, params)
 
-  return(Decision)
+  return(params$decision)
 })
