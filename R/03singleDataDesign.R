@@ -30,10 +30,9 @@ setMethod("simTrial", signature = c(object = "singleDataDesign"), definition = f
       modelFun = object@model@fun
       decisionFun = object@decision@fun
 
-
       while (params$decision@continue) {
-        #print(data)
-        print(params$decision)
+        # print(data)
+        # print(params$decision)
 
 
         # get data for next patient
@@ -58,8 +57,7 @@ setMethod("simTrial", signature = c(object = "singleDataDesign"), definition = f
     ####################################################################
 
     # The below allows for parallelisation
-    resultList <- parallelTrial(fun = runSim, nsim = nsim,
-                                vars = c("simSeeds", "object"), parallel = parallel)
+    resultList <- parallelTrial(fun = runSim, nsim = nsim, vars = c("simSeeds", "object"), parallel = parallel)
   }
 
   object@sims =  .local(object, nsim, ...)
@@ -70,9 +68,15 @@ setMethod("simTrial", signature = c(object = "singleDataDesign"), definition = f
 
 setMethod("fitModel", signature = c(object = "singleDataDesign"), definition = function(object, seed = 123) {
 
-  modelFun = object@model@fun
+  set.seed(seed)
+
+  validObject(object)
+
   params = object@p
   params$data = object@data
+
+  modelFun = object@model@fun
+
 
   # fit the model at the timepoint the next patient arrives
   params$model = do.call(modelFun, params)
@@ -84,14 +88,16 @@ setMethod("fitModel", signature = c(object = "singleDataDesign"), definition = f
 setMethod("getDecision", signature = c(object = "singleDataDesign"), definition = function(object, seed = 123) {
   set.seed(seed)
 
-  modelFun = object@model@fun
-  decisionFun = object@decision@fun
+  validObject(object)
+
   params = object@p
   params$data = object@data
 
+  modelFun = object@model@fun
+  decisionFun = object@decision@fun
+
   # fit the model at the timepoint the next patient arrives
   params$model = do.call(modelFun, params)
-
   # make decisions as to what happens next
   params$decision = do.call(decisionFun, params)
 

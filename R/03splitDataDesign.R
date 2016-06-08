@@ -16,7 +16,6 @@ setMethod("simTrial", signature = c(object = "splitDataDesign"), definition = fu
 
     set.seed(seed)
     simSeeds <- sample(x = seq_len(1e+08), size = nsim)
-
     ##############################################################
     # function doing all the work
     runSim = function(iterSim) {
@@ -44,8 +43,8 @@ setMethod("simTrial", signature = c(object = "splitDataDesign"), definition = fu
       }
 
       while (params$decision@continue) {
-        #print(data)
-        print(params$decision)
+        # print(data)
+        # print(params$decision)
 
         ###########################################
         # if recruiting now asign arm/dose etc. and get new patient
@@ -53,8 +52,7 @@ setMethod("simTrial", signature = c(object = "splitDataDesign"), definition = fu
 
           # get outcome data if recruiting
           params$data = do.call(outcomeFun, params)
-
-          # get baseline data for next patient
+          # get baseline data for next patient (in particular arrival time)
           params$data = do.call(baselineFun, params)
 
         } else {
@@ -67,10 +65,8 @@ setMethod("simTrial", signature = c(object = "splitDataDesign"), definition = fu
         params$decision = do.call(triggerFun, params)
         if(params$decision@analyse){
         print(params$data)
-
         # fit the model at the timepoint the next patient arrives
         params$model = do.call(modelFun, params)
-
         # make decisions as to what happens next
         params$decision = do.call(decisionFun, params)
         }
@@ -79,20 +75,19 @@ setMethod("simTrial", signature = c(object = "splitDataDesign"), definition = fu
       return(list(seed = seed ,data = params$data, decision = params$decision, params = params$model))
     }
     ####################################################################
-
     # The below allows for parallelisation
-    resultList <- parallelTrial(fun = runSim, nsim = nsim,
-                                vars = c("simSeeds", "object"), parallel = parallel)
+    resultList <- parallelTrial(fun = runSim, nsim = nsim, vars = c("simSeeds", "object"), parallel = parallel)
   }
 
   object@sims =  .local(object, nsim, ...)
-
   return(object)
 })
 
 
 setMethod("fitModel", signature = c(object = "splitDataDesign"), definition = function(object, seed = 123) {
   set.seed(seed)
+
+  validObject(object)
 
   modelFun = object@model@fun
   params = object@p
@@ -116,6 +111,8 @@ setMethod("fitModel", signature = c(object = "splitDataDesign"), definition = fu
 
 setMethod("getDecision", signature = c(object = "splitDataDesign"), definition = function(object, seed = 123) {
   set.seed(seed)
+
+  validObject(object)
 
   modelFun = object@model@fun
   decisionFun = object@decision@fun
