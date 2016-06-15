@@ -1,17 +1,16 @@
-#' @exportClass singleDataDesign
-#' @export singleDataDesign
-singleDataDesign = setClass( "singleDataDesign", list(
+#' @exportClass singleStageDesign
+#' @export singleStageDesign
+singleStageDesign = setClass( "singleStageDesign", list(
   simulateData = "simulateData"),
   contains = "trialDesign"
 )
 
 
 
-
-
-setMethod("simTrial", signature = c(object = "singleDataDesign"), definition = function( object, nSim = NULL, ...){
+setMethod("simTrial", signature = c(object = "singleStageDesign"), definition = function( object, nSim = NULL, ...){
 
   validObject(object)
+
   if(!is.null(nSim)) {
     object@nSim = as.integer(nSim)
   }
@@ -27,41 +26,23 @@ setMethod("simTrial", signature = c(object = "singleDataDesign"), definition = f
       seed = simSeeds[iterSim]
       set.seed(seed)
 
-
-
       params = do.call(object@setupFun@fun,object@p)
-
       params$data = object@data
 
       dataFun = object@simulateData@fun
-      triggerFun = object@triggerAnalysis@fun
       modelFun = object@model@fun
       decisionFun = object@decision@fun
 
+      # get all data
+      params$data = do.call(dataFun, params)
 
+      # fit the model at the timepoint the next patient arrives
+      params$model = do.call(modelFun, params)
 
-      while (params$decision@continue) {
-        # print(data)
-        # print(params$decision)
+      # make decisions as to what happens next
+      params$decision = do.call(decisionFun, params)
 
-
-        # get data for next patient
-        params$data = do.call(dataFun, params)
-
-        ###########################################
-        # check if ready to analyse
-        params$decision = do.call(triggerFun, params)
-        if(params$decision@analyse){
-
-          # fit the model at the timepoint the next patient arrives
-          params$model = do.call(modelFun, params)
-
-          # make decisions as to what happens next
-          params$decision = do.call(decisionFun, params)
-        }
-        ###########################################
-      }
-      return(list(seed = seed ,data = params$data, decision = params$decision))
+      return(list(seed = seed, data = params$data, decision = params$decision))
     }
     ####################################################################
 
@@ -69,13 +50,13 @@ setMethod("simTrial", signature = c(object = "singleDataDesign"), definition = f
     resultList <- parallelTrial(fun = runSim, nsim = nsim, vars = c("simSeeds", "object"), parallel = parallel)
   }
 
-  object@sims =  .local(object, nsim = object@nSim, ...)
+  object@sims =  .local(object, object@nSim, ...)
 
   return(object)
 })
 
 
-setMethod("fitModel", signature = c(object = "singleDataDesign"), definition = function(object, seed = 123) {
+setMethod("fitModel", signature = c(object = "singleStageDesign"), definition = function(object, seed = 123) {
 
   set.seed(seed)
 
@@ -94,7 +75,7 @@ setMethod("fitModel", signature = c(object = "singleDataDesign"), definition = f
 })
 
 
-setMethod("getDecision", signature = c(object = "singleDataDesign"), definition = function(object, seed = 123) {
+setMethod("getDecision", signature = c(object = "singleStageDesign"), definition = function(object, seed = 123) {
   set.seed(seed)
 
   validObject(object)
@@ -112,3 +93,9 @@ setMethod("getDecision", signature = c(object = "singleDataDesign"), definition 
 
   return(params$decision)
 })
+
+
+setMethod("summary", signature = "singleStageDesign", definition = function(object){
+  selectMethod("summary", list("trialDesign"))(object)
+})
+

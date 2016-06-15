@@ -3,18 +3,24 @@
 #' @export splitDataDesign
 splitDataDesign = setClass( "splitDataDesign", list(
   simBaseline = "simulateBaseline",
-  simOutcome = "simualteOutcome"),
+  simOutcome = "simulateOutcome"),
   contains = "trialDesign"
 )
 
 
-setMethod("simTrial", signature = c(object = "splitDataDesign"), definition = function( object, nsim = 1L, ...){
+setMethod("simTrial", signature = c(object = "splitDataDesign"), definition = function( object, nSim = NULL, ...){
 
   validObject(object)
 
-  .local <- function (object, nsim = 1L, seed = NULL, parallel = FALSE, packages = character(0), ...){
+  if(!is.null(nSim)) {
+    object@nSim = as.integer(nSim)
+  }
 
-    set.seed(seed)
+  .local <- function (object, nsim = 1L, parallel = FALSE, ...){
+
+    if(length(object@seed) > 0){
+      set.seed(object@seed)
+    }
     simSeeds <- sample(x = seq_len(1e+08), size = nsim)
     ##############################################################
     # function doing all the work
@@ -22,7 +28,7 @@ setMethod("simTrial", signature = c(object = "splitDataDesign"), definition = fu
       seed = simSeeds[iterSim]
       set.seed(seed)
 
-      params = object@p
+      params = do.call(object@setupFun@fun,object@p)
       params$data = object@data
 
       baselineFun = object@simBaseline@fun
@@ -64,7 +70,7 @@ setMethod("simTrial", signature = c(object = "splitDataDesign"), definition = fu
         # check if ready to analyse
         params$decision = do.call(triggerFun, params)
         if(params$decision@analyse){
-        print(params$data)
+        # print(params$data)
         # fit the model at the timepoint the next patient arrives
         params$model = do.call(modelFun, params)
         # make decisions as to what happens next
@@ -72,22 +78,25 @@ setMethod("simTrial", signature = c(object = "splitDataDesign"), definition = fu
         }
         ###########################################
       }
-      return(list(seed = seed ,data = params$data, decision = params$decision, params = params$model))
+      return(list(seed = seed ,data = params$data, decision = params$decision))
     }
     ####################################################################
     # The below allows for parallelisation
     resultList <- parallelTrial(fun = runSim, nsim = nsim, vars = c("simSeeds", "object"), parallel = parallel)
   }
 
-  object@sims =  .local(object, nsim, ...)
+  object@sims =  .local(object, object@nSim, ...)
   return(object)
 })
 
 
-setMethod("fitModel", signature = c(object = "splitDataDesign"), definition = function(object, seed = 123) {
-  set.seed(seed)
+setMethod("fitModel", signature = c(object = "splitDataDesign"), definition = function(object) {
 
   validObject(object)
+
+  if(length(object@seed) > 0){
+    set.seed(object@seed)
+  }
 
   modelFun = object@model@fun
   params = object@p
@@ -109,10 +118,13 @@ setMethod("fitModel", signature = c(object = "splitDataDesign"), definition = fu
 })
 
 
-setMethod("getDecision", signature = c(object = "splitDataDesign"), definition = function(object, seed = 123) {
-  set.seed(seed)
+setMethod("getDecision", signature = c(object = "splitDataDesign"), definition = function(object) {
 
   validObject(object)
+
+  if(length(object@seed) > 0){
+    set.seed(object@seed)
+  }
 
   modelFun = object@model@fun
   decisionFun = object@decision@fun
