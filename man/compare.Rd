@@ -4,7 +4,8 @@
 \alias{compare}
 \title{compare}
 \usage{
-compare(outFolder, p = NULL, fun = NULL, colNames = NULL, ...)
+compare(outFolder, p = NULL, fun = NULL, colNames = NULL,
+  paired = FALSE, ...)
 }
 \arguments{
 \item{outFolder}{The folder with all the .Rdata files containing results objects}
@@ -14,6 +15,8 @@ compare(outFolder, p = NULL, fun = NULL, colNames = NULL, ...)
 \item{fun}{A function to generate a row of the summary data.frame. This function should take at least two arguments: object and file.name.}
 
 \item{colNames}{The column names to use for the /code{data.frame}.}
+
+\item{paired}{Whether simulations are in hypothesis pairs. e.g. 1 is the null hypothesis and 2 is the alternative hypothesis}
 
 \item{...}{Additional arguments to pass to fun.}
 }

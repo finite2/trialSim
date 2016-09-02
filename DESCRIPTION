@@ -8,5 +8,4 @@ Maintainer: Peter Dutton <dutton.peter@gmail.com>
 Description: Modular trial design by simulation package
 License: GPL-2
 Depends:
-	R2jags
 RoxygenNote: 5.0.1

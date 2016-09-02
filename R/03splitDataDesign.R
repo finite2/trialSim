@@ -43,11 +43,6 @@ setMethod("simTrial", signature = c(object = "splitDataDesign"), definition = fu
         params$data = do.call(baselineFun, params)
       }
 
-      if(!is.na(params$data$dose[dim(params$data)[1]])) {
-        # simuate baseline for next patient if not provided
-        params$data = do.call(baselineFun, params)
-      }
-
       while (params$decision@continue) {
         # print(data)
         # print(params$decision)

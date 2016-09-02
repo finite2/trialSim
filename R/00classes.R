@@ -10,9 +10,10 @@
 #'
 #' @exportClass setupFunction
 #' @export setupFunction
-setupFunction = setClass("setupFunction", list(fun = "function"), prototype = function(...){
+setupFunction = setClass("setupFunction", list(fun = "function"), prototype = list(fun = function(...){
   return(list(...))
-})
+}))
+
 
 #########################################################################
 # Data

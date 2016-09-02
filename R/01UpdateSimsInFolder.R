@@ -97,7 +97,8 @@ UpdateSimsInFolder = function(inFolder, outFolder, updateFunctions = NULL, ...) 
       results = simTrial(setup, ...)
       t0 = Sys.time()
       save(results, file = paste0(outFolder, file2))
-      message(difftime(Sys.time(), t0, units = "hours"))
+      t1 = difftime(Sys.time(), t0, units = "hours")
+      message(" Time taken: ", floor(t1), "h ", floor(60 * (t1-floor(t1))), "min")
       counter = counter + 1
     }
   }
