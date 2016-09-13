@@ -12,7 +12,7 @@ Runs trial level simulations
 \section{Slots}{
 
 \describe{
-\item{\code{object}}{An object with parent class /code{/link{trialDesign}}}
+\item{\code{object}}{An object with parent class \code{\link{trialDesign}}}
 
 \item{\code{parallel}}{TRUE/FALSE Whether to run the simulations in parallel or not}
 

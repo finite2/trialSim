@@ -73,3 +73,22 @@ setMethod("simTrial", signature = c(object = "singleDataDesign"), definition = f
 
   return(object)
 })
+
+
+setMethod("getData", signature = c(object = "singleDataDesign"), definition = function(object) {
+
+  validObject(object)
+
+  if(length(object@seed) > 0){
+    set.seed(object@seed)
+  }
+
+  params = object@p
+  params$data = object@data
+  simDataFun = object@simData@fun
+
+  # fit the model at the timepoint the next patient arrives
+  params$data = do.call(simDataFun, params)
+
+  return(params$data)
+})

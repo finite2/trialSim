@@ -2,16 +2,16 @@
 % Please edit documentation in R/01genericMethods.R
 \name{getModel}
 \alias{getModel}
-\title{fitModel}
+\title{getModel}
 \usage{
 getModel(object, ...)
 }
 \description{
-Fit the model to the data and return the model
+Fit the model to the data and returns the model. The data to use should be stored in object@data
 }
 \section{Slots}{
 
 \describe{
-\item{\code{object}}{An object with parent class /code{/link{trialDesign}}}
+\item{\code{object}}{An object with parent class \code{\link{trialDesign}}}
 }}
 

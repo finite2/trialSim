@@ -1,7 +1,7 @@
 #' @exportClass singleStageDesign
 #' @export singleStageDesign
 singleStageDesign = setClass( "singleStageDesign", list(
-  simulateData = "simulateData"),
+  simData = "simulateData"),
   contains = "trialDesign"
 )
 
@@ -29,7 +29,7 @@ setMethod("simTrial", signature = c(object = "singleStageDesign"), definition = 
       params = do.call(object@setupFun@fun,object@p)
       params$data = object@data
 
-      dataFun = object@simulateData@fun
+      dataFun = object@simData@fun
       modelFun = object@model@fun
       decisionFun = object@decision@fun
 
@@ -56,6 +56,23 @@ setMethod("simTrial", signature = c(object = "singleStageDesign"), definition = 
 })
 
 
+setMethod("getData", signature = c(object = "singleStageDesign"), definition = function(object) {
+
+  validObject(object)
+
+  if(length(object@seed) > 0){
+    set.seed(object@seed)
+  }
+
+  params = object@p
+  params$data = object@data
+  simDataFun = object@simData@fun
+
+  # fit the model at the timepoint the next patient arrives
+  params$data = do.call(simDataFun, params)
+
+  return(params$data)
+})
 
 
 

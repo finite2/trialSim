@@ -83,3 +83,39 @@ setMethod("simTrial", signature = c(object = "splitDataDesign"), definition = fu
   object@sims =  .local(object, object@nSim, ...)
   return(object)
 })
+
+setMethod("getBaseline", signature = c(object = "splitDataDesign"), definition = function(object) {
+
+  validObject(object)
+
+  if(length(object@seed) > 0){
+    set.seed(object@seed)
+  }
+
+  params = object@p
+  params$data = object@data
+  baseFun = object@simBaseline@fun
+
+  # fit the model at the timepoint the next patient arrives
+  params$data = do.call(baseFun, params)
+
+  return(params$data)
+})
+
+setMethod("getOutcome", signature = c(object = "splitDataDesign"), definition = function(object) {
+
+  validObject(object)
+
+  if(length(object@seed) > 0){
+    set.seed(object@seed)
+  }
+
+  params = object@p
+  params$data = object@data
+  outcomeFun = object@simOutcome@fun
+
+  # fit the model at the timepoint the next patient arrives
+  params$data = do.call(outcomeFun, params)
+
+  return(params$data)
+})
