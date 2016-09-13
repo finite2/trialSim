@@ -39,3 +39,23 @@ setMethod("getDecision", signature = c(object = "trialDesign"), definition = fun
 
   return(params$decision)
 })
+
+setMethod("getTrigger", signature = c(object = "trialDesign"), definition = function(object) {
+
+  validObject(object)
+
+  if(length(object@seed) > 0){
+    set.seed(object@seed)
+  }
+
+  params = object@p
+  params$data = object@data
+
+  triggerFun = object@triggerAnalysis@fun
+
+
+  # fit the model at the timepoint the next patient arrives
+  params$decision = do.call(triggerFun, params)
+
+  return(params$decision)
+})

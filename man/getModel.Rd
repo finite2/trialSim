@@ -14,4 +14,9 @@ Fit the model to the data and returns the model. The data to use should be store
 \describe{
 \item{\code{object}}{An object with parent class \code{\link{trialDesign}}}
 }}
+\seealso{
+\code{\link{experimentalModel}}
+
+\code{\link{getData}}, \code{\link{getBaseline}}, \code{\link{getOutcome}}, \code{\link{getTrigger}} \code{\link{getmodel}}, \code{\link{getDecision}}
+}
 

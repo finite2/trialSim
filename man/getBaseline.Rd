@@ -14,4 +14,9 @@ Creates baseline data for the next patient. The data to add to should be stored 
 \describe{
 \item{\code{object}}{An object with parent class \code{\link{trialDesign}}}
 }}
+\seealso{
+\code{\link{simulateBaseline}}
+
+\code{\link{getData}}, \code{\link{getBaseline}}, \code{\link{getOutcome}}, \code{\link{getTrigger}} \code{\link{getmodel}}, \code{\link{getDecision}}
+}
 

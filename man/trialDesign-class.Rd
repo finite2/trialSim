@@ -11,11 +11,11 @@ This is the parent class for all trial designs.
 \section{Slots}{
 
 \describe{
-\item{\code{triggerAnalysis}}{An object of class /code{/link{readyForAnalysis}} which makes decisions about when tofit the model and pause recruitment}
+\item{\code{triggerAnalysis}}{An object of class \code{\link{readyForAnalysis}} which makes decisions about when tofit the model and pause recruitment}
 
-\item{\code{model}}{An object of class /code{/link{experimentalModel}} which fits the model and returns a model object}
+\item{\code{model}}{An object of class \code{\link{experimentalModel}} which fits the model and returns a model object}
 
-\item{\code{decision}}{An object of class /code{/link{makeDecisions}} which makes decisions based on the model and data}
+\item{\code{decision}}{An object of class \code{\link{makeDecisions}} which makes decisions based on the model and data}
 
 \item{\code{data}}{A data.frame of initial data when simulating part way through a trial}
 

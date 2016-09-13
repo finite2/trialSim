@@ -6,7 +6,7 @@
 \alias{simulateBaseline-class}
 \title{simulateBaseline}
 \description{
-Simulates baseline data one patient at a time and appends it to the current data.
+A class and generator function to store a function which simulates baseline data one patient at a time and appends it to the current data.
 }
 \section{Slots}{
 

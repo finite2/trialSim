@@ -6,7 +6,7 @@
 \alias{makeDecisions-class}
 \title{makeDecisions}
 \description{
-Takes the data and the model and makes decisions as to what should happend next. Returns an object of class /code{/link{decision}}
+A class and generator function to store a function which takes the data and the model and makes decisions as to what should happend next. Returns an object of class \code{\link{decision}}
 }
 \section{Slots}{
 

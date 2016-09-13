@@ -6,7 +6,7 @@
 \alias{decision-class}
 \title{decision}
 \description{
-This class is used to determine what is going on in the trial at any given time. It is returned from the /code{/link{readyForAnalysis}} and /code{/link{makeDecisions}} functions within the \code{\link{trialDesign}} class.
+This class is used to determine what is going on in the trial at any given time. It is returned from the \code{\link{readyForAnalysis}} and \code{\link{makeDecisions}} functions within the \code{\link{trialDesign}} class.
 }
 \section{Slots}{
 
@@ -21,6 +21,6 @@ This class is used to determine what is going on in the trial at any given time.
 
 \item{\code{stopReason}}{A string detailing why the trial is stopping}
 
-\item{\code{cohortSize}}{The number of patients to recruit before running the /code{/link{readyForAnalysis}} function}
+\item{\code{cohortSize}}{The number of patients to recruit before running the \code{\link{readyForAnalysis}} function}
 }}
 

@@ -6,7 +6,7 @@
 \alias{experimentalModel-class}
 \title{experimentalModel}
 \description{
-Runs the model and returns detailed results of the run. The more results it returns the easier it will be to make different decisions. If this is purely a rule based approach then the default for fun can be used which returns NULL.
+A class and generator function to store a function which runs the model and returns detailed results of the run. The more results it returns the easier it will be to make different decisions. If this is purely a rule based approach then the default for fun can be used which returns NULL. Then the rules can be written entirely in the \code{\link{makeDecisions}} component.
 }
 \section{Slots}{
 

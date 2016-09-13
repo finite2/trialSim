@@ -6,7 +6,7 @@
 \alias{simulateData-class}
 \title{simulateData}
 \description{
-Simulates baseline and outcome data and adds it to the current data. This class may not be necessary in the final release
+A class and generator function to store a function which simulates baseline and outcome data and adds it to the current data.
 }
 \section{Slots}{
 

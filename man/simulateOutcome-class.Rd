@@ -6,7 +6,7 @@
 \alias{simulateOutcome-class}
 \title{simulateOutcome}
 \description{
-Simulates outcome data and adds it to the current data.
+A class and generator function to store a function which simulates outcome data and adds it to the current data. This function may rely on the current \code{\link{Decision}} object.
 }
 \section{Slots}{
 
