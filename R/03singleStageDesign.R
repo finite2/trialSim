@@ -7,7 +7,7 @@ singleStageDesign = setClass( "singleStageDesign", list(
 
 
 
-setMethod("simTrial", signature = c(object = "singleStageDesign"), definition = function( object, nSim = NULL, ...){
+setMethod("simTrial", signature = c(object = "singleStageDesign"), definition = function(object, nSim = NULL, ...){
 
   validObject(object)
 
@@ -56,43 +56,7 @@ setMethod("simTrial", signature = c(object = "singleStageDesign"), definition = 
 })
 
 
-setMethod("fitModel", signature = c(object = "singleStageDesign"), definition = function(object, seed = 123) {
 
-  set.seed(seed)
-
-  validObject(object)
-
-  params = object@p
-  params$data = object@data
-
-  modelFun = object@model@fun
-
-
-  # fit the model at the timepoint the next patient arrives
-  params$model = do.call(modelFun, params)
-
-  return(params$model)
-})
-
-
-setMethod("getDecision", signature = c(object = "singleStageDesign"), definition = function(object, seed = 123) {
-  set.seed(seed)
-
-  validObject(object)
-
-  params = object@p
-  params$data = object@data
-
-  modelFun = object@model@fun
-  decisionFun = object@decision@fun
-
-  # fit the model at the timepoint the next patient arrives
-  params$model = do.call(modelFun, params)
-  # make decisions as to what happens next
-  params$decision = do.call(decisionFun, params)
-
-  return(params$decision)
-})
 
 
 setMethod("summary", signature = "singleStageDesign", definition = function(object){

@@ -19,9 +19,9 @@ setGeneric("simTrial", def = function(object, ...){
 #'
 #' @slot object An object with parent class /code{/link{trialDesign}}
 #'
-#' @exportMethod fitModel
-setGeneric("fitModel", def = function(object, ...){
-  standardGeneric("fitModel")
+#' @exportMethod getModel
+setGeneric("getModel", def = function(object, ...){
+  standardGeneric("getModel")
 })
 
 #' getDecision
@@ -34,6 +34,7 @@ setGeneric("fitModel", def = function(object, ...){
 setGeneric("getDecision", def = function(object, ...){
   standardGeneric("getDecision")
 })
+
 
 #' @exportMethod summary
 #setGeneric("summary", def = function(object, ...){
