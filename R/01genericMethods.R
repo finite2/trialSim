@@ -58,6 +58,7 @@ setGeneric("getDecision", def = function(object, ...){
 #'
 #' \code{\link{getData}}, \code{\link{getBaseline}}, \code{\link{getOutcome}}, \code{\link{getTrigger}} \code{\link{getmodel}}, \code{\link{getDecision}}
 #'
+#' @exportMethod getData
 setGeneric("getData", def = function(object, ...){
   standardGeneric("getData")
 })
@@ -87,6 +88,7 @@ setGeneric("getBaseline", def = function(object, ...){
 #' \code{\link{simulateOutcome}}
 #'
 #' \code{\link{getData}}, \code{\link{getBaseline}}, \code{\link{getOutcome}}, \code{\link{getTrigger}} \code{\link{getmodel}}, \code{\link{getDecision}}
+#'
 #' @exportMethod getOutcome
 setGeneric("getOutcome", def = function(object, ...){
   standardGeneric("getOutcome")
