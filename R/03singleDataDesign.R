@@ -66,7 +66,7 @@ setMethod("simTrial", signature = c(object = "singleDataDesign"), definition = f
     ####################################################################
 
     # The below allows for parallelisation
-    resultList <- parallelTrial(fun = runSim, nsim = nsim, vars = c("simSeeds", "object"), parallel = parallel)
+    resultList <- parallelTrial(fun = runSim, nsim = nsim, vars = c("simSeeds", "object"), parallel = parallel, p = object@p)
   }
 
   object@sims =  .local(object, nsim = object@nSim, ...)
