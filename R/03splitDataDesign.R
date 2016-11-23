@@ -68,9 +68,9 @@ setMethod("simTrial", signature = c(object = "splitDataDesign"), definition = fu
         # print(params$data)
         # fit the model at the timepoint the next patient arrives
         params$model = do.call(modelFun, params)
+        }
         # make decisions as to what happens next
         params$decision = do.call(decisionFun, params)
-        }
         ###########################################
       }
       return(list(seed = seed ,data = params$data, decision = params$decision))
